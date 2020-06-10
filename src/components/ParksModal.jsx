@@ -1,37 +1,68 @@
+import React, { Component } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import '../NewApp.css'
 
-import React , {Component} from 'react';
-import axios from 'axios';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal'
+class ParksModal extends Component {
+  constructor(props, context) {
+    super(props, context);
 
-function ParksModal(props) {
+    this.state = {
+      parksData:this.props.parksData
+    };
+  }
+
+  render() {
+    const { parksData } = this.state;
+    console.log(parksData)
     return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
+      <Modal show={this.props.show} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Modal heading
+          <Modal.Title>
+            {parksData.name}-{parksData.states}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <h4>Centered Modal</h4>
-          <p>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-            consectetur ac, vestibulum at eros.
+        <Modal.Body className="modal-paragraph">
+          <img
+            src={parksData.images[0].url}
+            alt="park picture"
+            style={{ height: "300px", width: "100%" }}
+          ></img>
+          <p className="mb-0">
+            <b>Description:</b>
           </p>
+          <p className="mb-3">{parksData.description}</p>
+          <p className="mb-0">
+            <b>Entrance Fee:</b>
+          </p>
+          <p className="mb-3">{parksData.entranceFees[0].cost}</p>
+          <p className="mb-0">
+            <b>Park Office Address:</b>
+          </p>
+          <p>{parksData.addresses[0].line1}</p>
+          <p className="mb-3">
+            {parksData.addresses[0].city}
+            {parksData.addresses[0].stateCode}
+            {parksData.addresses[0].postalCode}
+          </p>
+          <p>
+            <b className="mb-0">Phone Number:</b>
+          </p>
+          <p className="mb-3">
+            {parksData.contacts.phoneNumbers[0].phoneNumber}
+          </p>
+          <p className="mb-0">
+            <b>Email Address:</b>
+          </p>
+          <p>{parksData.contacts.emailAddresses[0].emailAddress}</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
+          <Button variant="secondary" onClick={this.props.handleClose}>
+            Close
+          </Button>
         </Modal.Footer>
       </Modal>
     );
   }
-  
-  export default ParksModal;
-  
+}
+export default ParksModal;

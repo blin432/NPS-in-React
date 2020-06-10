@@ -1,52 +1,50 @@
+import React, { Component } from "react";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import ParksModal from "./ParksModal.jsx";
 
-import React , {Component} from 'react';
-import axios from 'axios';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Loading from './Loading.jsx';
-import ParksModal from './ParksModal.jsx';
 
 class SingleCards extends Component {
-        state={
-          name:this.props.name,
-          image:this.props.image,
-          description:this.props.description,
+  constructor(props, context) {
+    super(props, context);
 
-      }
-      
-  
-    render(){
-      const {name, image, description} = this.state;
-      console.log(image)
-const [modalShow, setModalShow] = React.useState(false);
-      return(
-      
-        <div>
-                <Card style={{ width: '18rem' }}>
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+
+    this.state = {
+      name: this.props.name,
+      image: this.props.image,
+      description: this.props.description,
+      show: false,
+      parksData:this.props.parksData
+    };
+  }
+
+  handleClose() {
+    this.setState({ show: false });
+  }
+
+  handleShow() {
+    this.setState({ show: true });
+    console.log("click");
+  }
+
+  render() {
+    const { name, image, description, parksData } = this.state;
+
+    return (
+      <div>
+        <Card style={{ width: "18rem" }}>
           <Card.Img variant="top" src={image} />
           <Card.Body>
             <Card.Title>{name}</Card.Title>
-            <Card.Text>
-              {description}
-            </Card.Text>
-            <Button variant="primary">Go somewhere</Button>
+            <Card.Text>{description}</Card.Text>
+            <Button variant="primary" onClick={this.handleShow}>See More</Button>
           </Card.Body>
-          <Button variant="primary" onClick={() => setModalShow(true)}>
-          Launch vertically centered modal
-        </Button>
-  
-        <ParksModal
-          show={modalShow}
-          onHide={() => setModalShow(false)}
-        />
+          <ParksModal parksData={parksData} show={this.state.show} handleClose={this.handleClose} />
         </Card>
-
-    </div>
-
-      )
-      }
-
+      </div>
+    );
+  }
 }
 export default SingleCards;
-
-
